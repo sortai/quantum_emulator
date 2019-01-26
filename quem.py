@@ -12,4 +12,4 @@ class qsys:
             self.state = initstate.copy()
     def __len__(self):
         return len(self.state)
-        
+    
