@@ -1,4 +1,5 @@
 import numpy as np
+from random import random
 from exceptions import *
 
 class qsys:
@@ -9,7 +10,19 @@ class qsys:
             self.state = initstate
         else:
             if len(initstate) != nstates: raise NumberOfStatesError("len(initstate) != nstates")
-            self.state = initstate.copy()
+            self.state = np.array(initstate)
     def __len__(self):
         return len(self.state)
+    @property
+    def ps(self):
+        return self.state*[c.conjugate() for c in self.state]
+    def measurement(self):
+        r=random()
+        for n, p in enumerate(self.ps):
+            if r<p:
+                self.state = np.zeros(len(self.state), dtype=np.complex128)
+                self.state[n] = 1+0j
+                return self.state.copy()
+            else: r-=p
+        
     
