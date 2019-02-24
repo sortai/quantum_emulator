@@ -24,5 +24,12 @@ class qsys:
                 self.state[n] = 1+0j
                 return self.state.copy()
             else: r-=p
+    def tenmult(self, other):
+        return qsys(
+            len(self.state)*len(other.state),
+            [self.state[int(i/len(self.state))]*other.state[i%len(other.state)] for i in range(len(self.state)*len(other.state))]
+            )
+
+
         
     
