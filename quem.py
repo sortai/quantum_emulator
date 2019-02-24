@@ -30,6 +30,5 @@ class qsys:
             [self.state[int(i/len(self.state))]*other.state[i%len(other.state)] for i in range(len(self.state)*len(other.state))]
             )
 
-
-        
-    
+def bqsys(self, nbits = 1, initstate = None):
+        return qsys(nstates = 2**nbits, initstate)
