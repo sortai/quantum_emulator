@@ -27,7 +27,7 @@ class qsys:
     def tenmult(self, other):
         return qsys(
             len(self.state)*len(other.state),
-            [self.state[int(i/len(self.state))]*other.state[i%len(other.state)] for i in range(len(self.state)*len(other.state))]
+            [self.state[int(i/len(self))]*other.state[i%len(other)] for i in range(len(self)*len(other))]
             )
 
 def bqsys(self, nbits = 1, initstate = None):
@@ -43,7 +43,7 @@ class qgate:
             if len(initstate) != nstates: raise NumberOfStatesError("len(initstate) != nstates")
             self.state = np.array(initstate)
     def __len__(self):
-        return len(self.state)
+        return self.state.shape[0]
 ##    def tenmult(self, other):
 ##        return qsys(
 ##            len(self.state)*len(other.state),
