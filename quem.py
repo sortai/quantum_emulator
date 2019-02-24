@@ -24,28 +24,32 @@ class qsys:
                 self.state[n] = 1+0j
                 return self.state.copy()
             else: r-=p
-    def tenmult(self, other):
+    @staticmethod
+    def kron(*syss):
+        if len(syss) == 1:
+            return syss[0]
+        res = qsys.kron(*syss[1:])
         return qsys(
-            len(self.state)*len(other.state),
-            [self.state[int(i/len(self))]*other.state[i%len(other)] for i in range(len(self)*len(other))]
+            len(syss[0])*len(res),
+            np.kron(a.state, res.state)
             )
 
 def bqsys(self, nbits = 1, initstate = None):
         return qsys(nstates = 2**nbits, initstate)
 
 class qgate:
-    def __init__(self, nstates = 2, initstate = None):
-        if initstate is None:
-            initstate = np.zeros((nstates, nstates), dtype=np.complex128)
-            initstate[0] = 1+0j
-            self.state = initstate
-        else:
-            if len(initstate) != nstates: raise NumberOfStatesError("len(initstate) != nstates")
-            self.state = np.array(initstate)
+    def __init__(self, nstates = 2, mat = None):
+        if mat.size[0] != nstates: raise NumberOfStatesError("mat.size[0] != nstates")
+        self.mat = np.array(mat)
     def __len__(self):
-        return self.state.shape[0]
-##    def tenmult(self, other):
-##        return qsys(
-##            len(self.state)*len(other.state),
-##            [self.state[int(i/len(self.state))]*other.state[i%len(other.state)] for i in range(len(self.state)*len(other.state))]
-##            )
+        return self.mat.shape[0]
+    @staticmethod
+    def kron(*gates):
+        if len(gates) == 1:
+            return gates[0]
+        res = qgate.kron(*gates[1:])
+        return qgate(
+            len(gates[0])*len(res),
+            np.kron(a.mat, res.mat)
+            )
+    
